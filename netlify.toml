@@ -1,0 +1,11 @@
+# Netlify build + hosting config for the Vite SPA.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Single-page-app fallback: every route serves index.html so React Router
+# handles /gallery, /about, refreshes, etc. instead of 404-ing.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
