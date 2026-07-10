@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root { color-scheme: dark; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply bg-base text-ink font-body antialiased;
+    /* subtle depth: two faint radial accents on the charcoal base (not glass, not a full layer) */
+    background-image:
+      radial-gradient(900px 600px at 80% -10%, rgba(255, 106, 44, 0.14), transparent 60%),
+      radial-gradient(700px 500px at -10% 10%, rgba(255, 176, 32, 0.06), transparent 55%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4 { @apply font-display font-semibold tracking-tight; }
+
+  /* Accessible focus ring in the signal accent */
+  :focus-visible { outline: 2px solid theme('colors.accent'); outline-offset: 3px; border-radius: 4px; }
+
+  ::selection { background: rgba(255, 106, 44, 0.4); color: #fff; }
+
+  /* Custom scrollbar to keep the dark theme cohesive */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #0A0B0E; }
+  ::-webkit-scrollbar-thumb { background: #23262f; border-radius: 8px; border: 2px solid #0A0B0E; }
+  ::-webkit-scrollbar-thumb:hover { background: #2f333f; }
+}
+
+@layer components {
+  /* Glass — reserved for floating interactive UI only (nav, pills, spec overlays) */
+  .glass {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  .container-x { @apply mx-auto w-full max-w-[1240px] px-5 sm:px-8; }
+
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.2em] text-accent inline-flex items-center gap-2;
+  }
+  .eyebrow::before { content: ''; @apply inline-block h-px w-8 bg-accent/70; }
+
+  /* Primary + secondary buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full font-medium text-[0.95rem]
+           px-6 py-3 transition-all duration-300 will-change-transform;
+  }
+  /* Dark text on the vivid orange reads far better than white (WCAG AA). */
+  .btn-primary {
+    @apply btn bg-accent text-[#140f0a] font-semibold shadow-accent-glow hover:bg-accent-bright hover:-translate-y-0.5;
+  }
+  .btn-ghost {
+    @apply btn glass text-ink hover:border-glow/60 hover:text-glow;
+  }
+
+  /* Data / spec styling */
+  .spec { @apply font-mono text-sm text-muted; }
+  .spec strong { @apply text-ink font-medium; }
+
+  /* Blur-up image reveal: images start blurred + scaled, sharpen in on load */
+  .blur-up { filter: blur(18px); transform: scale(1.04); transition: filter 0.7s ease, transform 0.7s ease; }
+  .blur-up.loaded { filter: blur(0); transform: none; }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .grain::after {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.4; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+}
+
+/* Reduced motion: honor the accessibility requirement site-wide */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .blur-up { filter: none; transform: none; }
+}
