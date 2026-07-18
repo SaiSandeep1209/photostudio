@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Section, SectionHeading } from '../components/Section.jsx'
 import Reveal from '../components/Reveal.jsx'
-import CameraSequence from '../components/CameraSequence.jsx'
+import HeroVideo from '../components/HeroVideo.jsx'
 import DisciplineCard from '../components/DisciplineCard.jsx'
 import EquipmentCard from '../components/EquipmentCard.jsx'
 import MasonryGallery from '../components/MasonryGallery.jsx'
@@ -14,7 +14,7 @@ export default function Home() {
   const previewItems = GALLERY.slice(0, 6)
   return (
     <>
-      <CameraSequence />
+      <HeroVideo />
 
       {/* Signature disciplines */}
       <Section>
